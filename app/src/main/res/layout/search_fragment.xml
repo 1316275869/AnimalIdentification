@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorGreen">
+    <!-- 顶一个SearchView -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+    <Button
+        android:layout_width="45dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/id_b"
+        android:background="@drawable/ic_mic_black_24dp"
+        />
+   <SearchView
+        android:id="@+id/id_sv"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <!-- 为SearchView定义自动补齐的ListView-->
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/id_tv"></TextView>
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:dividerHeight="10dp"
+        />
+
+</LinearLayout>
