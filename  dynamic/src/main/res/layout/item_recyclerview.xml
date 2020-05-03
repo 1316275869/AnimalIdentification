@@ -174,7 +174,7 @@
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.503"
-            tools:text="围观" />
+            tools:text="点赞" />
 
         <ImageView
             android:id="@+id/iv_eye"
@@ -184,7 +184,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline3"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@mipmap/see" />
+            android:onClick="iv_eye"
+            app:srcCompat="@mipmap/good" />
 
         <ImageView
             android:id="@+id/iv_share"
@@ -194,7 +195,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline3"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@mipmap/share" />
+            app:srcCompat="@drawable/ic_share_black_24dp" />
 
         <TextView
             android:id="@+id/tv_share"
@@ -251,23 +252,34 @@
 
             android:textColor="#ff606060"
             android:divider="@null"
-
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/guideline9"
             app:layout_constraintStart_toEndOf="@+id/guideline7"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.501"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            app:layout_constraintStart_toStartOf="parent"
 
 
             />
-        <TextView
-            android:id="@+id/tx"
+
+        <EditText
+            android:id="@+id/edit"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/guideline7"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lustview"
-            />
+            android:layout_height="wrap_content"
+            android:hint="评论"
+
+            app:layout_constraintEnd_toStartOf="@+id/button4"
+            app:layout_constraintHorizontal_bias="1.0"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/guideline9" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+
+             />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline7"
@@ -275,6 +287,14 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.103797466" />
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="54dp"
+            android:layout_height="48dp"
+            android:text="发送"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline9" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -12,6 +12,7 @@ import java.util.Collections;
 
 import cn.edu.heuet.littlecurl.qzone.R;
 import cn.edu.heuet.littlecurl.qzone.adapter.RecyclerVidewAdapter;
+import cn.edu.heuet.littlecurl.qzone.bean.CommentItem;
 import cn.edu.heuet.littlecurl.qzone.bean.Location;
 import cn.edu.heuet.littlecurl.qzone.bean.MyMedia;
 import cn.edu.heuet.littlecurl.qzone.bean.RecyclerViewItem;
@@ -112,14 +113,57 @@ public class QZoneActivity extends AppCompatActivity
         Location location = new Location();
         location.setAddress("Test Address");
         // 最后构造EvaluationItem
-        final RecyclerViewItem recyclerViewItem1 = new RecyclerViewItem(mediaList1, "河北经贸大学自强社是在校学生处指导、学生资助管理中心主办下，于2008年4月15日注册成立的，一个以在校学生为主体的学生公益社团。历经十年的发展，在学生处、学生资助管理中心的大力支持下，在每一届自强人的团结努力下，自强社已经由成... ", "2019-11-02",
+         RecyclerViewItem recyclerViewItem1 = new RecyclerViewItem(mediaList1, "河北经贸大学自强社是在校学生处指导、学生资助管理中心主办下，于2008年4月15日注册成立的，一个以在校学生为主体的学生公益社团。历经十年的发展，在学生处、学生资助管理中心的大力支持下，在每一届自强人的团结努力下，自强社已经由成... ", "2019-11-02",
                 "10080", "自强社", location, imgUrl1);
-        final RecyclerViewItem recyclerViewItem2 = new RecyclerViewItem(mediaList2, "河北经贸大学信息技术学院成立于1996年，由原计算机系/经济信息系合并组建而成，是我校建设的第一批学院。", "2019-11-02",
+         RecyclerViewItem recyclerViewItem2 = new RecyclerViewItem(mediaList2, "河北经贸大学信息技术学院成立于1996年，由原计算机系/经济信息系合并组建而成，是我校建设的第一批学院。", "2019-11-02",
                 "10080", "信息技术学院", location, imgUrl2);
-        final RecyclerViewItem recyclerViewItem4 = new RecyclerViewItem(mediaList4, "河北经贸大学信息技术学院成立于1996年，由原计算机系/经济信息系合并组建而成，是我校建设的第一批学院。", "2019-11-02",
+         RecyclerViewItem recyclerViewItem4 = new RecyclerViewItem(mediaList4, "河北经贸大学信息技术学院成立于1996年，由原计算机系/经济信息系合并组建而成，是我校建设的第一批学院。", "2019-11-02",
                 "10080", "信息技术学院", location, imgUrl2);
-        final RecyclerViewItem recyclerViewItem10 = new RecyclerViewItem(mediaList10, "河北经贸大学雷雨话剧社是河北经贸大学唯一以话剧为主，兼小品，相声等多种表演艺术形式，由一批热爱表演，热爱话剧，热爱中国传统艺术与当代流行艺术结合的同学共同组成的文艺类大型社团。雷雨话剧社坚持以追求话剧“更新颖”、“更大型”、“更专业”为奋斗目标，坚持在继承传统文化和前辈的演出经验... ", "2019-11-02",
+         RecyclerViewItem recyclerViewItem10 = new RecyclerViewItem(mediaList10, "河北经贸大学雷雨话剧社是河北经贸大学唯一以话剧为主，兼小品，相声等多种表演艺术形式，由一批热爱表演，热爱话剧，热爱中国传统艺术与当代流行艺术结合的同学共同组成的文艺类大型社团。雷雨话剧社坚持以追求话剧“更新颖”、“更大型”、“更专业”为奋斗目标，坚持在继承传统文化和前辈的演出经验... ", "2019-11-02",
                 "10080", "雷雨话剧社", location, imgUrl3);
+
+                //添加数据 ,Demo只添加5条评论
+//        name.add("白雪公主");
+//        toName.add("小矮人");
+//        content1.add("你们好啊~");
+//
+//        name.add("小矮人");
+//        toName.add("白雪公主");
+//        content1.add("白雪公主，早上好啊~");
+//
+//        name.add("王子");
+//        toName.add("");
+//        content1.add("这条说说很有道理的样子啊~");
+//
+//        name.add("国王");
+//        toName.add("");
+//        content1.add("我很喜欢这条说说~");
+//
+//        name.add("白雪公主");
+//        toName.add("王子");
+//        content1.add("你也是XX的朋友啊？");
+        ArrayList<CommentItem> commentItems=new ArrayList<>();
+        ArrayList<CommentItem> commentItems1=new ArrayList<>();
+        ArrayList<CommentItem> commentItems2=new ArrayList<>();
+        ArrayList<CommentItem> commentItems3=new ArrayList<>();
+        CommentItem commentItem1=new CommentItem("白雪公主","小矮人","你们好啊~");
+        commentItems.add(commentItem1);
+        commentItems1.add(commentItem1);
+        CommentItem commentItem2=new CommentItem("小矮人","白雪公主","白雪公主，早上好啊~~");
+        commentItems.add(commentItem2);
+        CommentItem commentItem3=new CommentItem("王子","","我很喜欢这条说说~");
+        commentItems.add(commentItem3);
+        commentItems1.add(commentItem3);
+        CommentItem commentItem4=new CommentItem("小矮人","白雪公主","白雪公主，早上好啊~~");
+        commentItems.add(commentItem4);
+        //每个recyclerViewItem都必须有setCommentItemArrayList
+        recyclerViewItem1.setCommentItemArrayList(commentItems);
+        recyclerViewItem2.setCommentItemArrayList(commentItems1);
+
+        recyclerViewItem4.setCommentItemArrayList(commentItems2);
+        recyclerViewItem10.setCommentItemArrayList(commentItems3);
+
+
         recyclerViewItemList.add(recyclerViewItem1);
         recyclerViewItemList.add(recyclerViewItem2);
         recyclerViewItemList.add(recyclerViewItem4);
@@ -129,16 +173,16 @@ public class QZoneActivity extends AppCompatActivity
     @Override
     public void onRefresh() {
         // 加载数据（先清空原来的数据）
-        recyclerViewItemList.clear();
-        // loadBackendData(url);
-        loadMyTestDate();
-        // 打乱顺序（为了确认确实是刷新了）
-        Collections.shuffle(recyclerViewItemList);
-        // 通知适配器数据已经改变
-        recyclerViewAdapter.notifyDataSetChanged();
-        // 下拉刷新完成
-        if (swipeRefreshLayout.isRefreshing()) {
-            swipeRefreshLayout.setRefreshing(false);
-        }
+//        recyclerViewItemList.clear();
+//        // loadBackendData(url);
+//        loadMyTestDate();
+//        // 打乱顺序（为了确认确实是刷新了）
+//        Collections.shuffle(recyclerViewItemList);
+//        // 通知适配器数据已经改变
+//        recyclerViewAdapter.notifyDataSetChanged();
+//        // 下拉刷新完成
+//        if (swipeRefreshLayout.isRefreshing()) {
+//            swipeRefreshLayout.setRefreshing(false);
+//        }
     }
 }

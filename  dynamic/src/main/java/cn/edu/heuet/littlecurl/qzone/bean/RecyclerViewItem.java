@@ -13,6 +13,7 @@ public class RecyclerViewItem implements Serializable {
     private String headImageUrl;             // 头像
     private ArrayList<MyMedia> mediaList;   // 九宫格数据
 
+    private ArrayList<CommentItem> commentItemArrayList;
     public RecyclerViewItem() {
     }
 
@@ -80,5 +81,13 @@ public class RecyclerViewItem implements Serializable {
 
     public void setHeadImageUrl(String headImageUrl) {
         this.headImageUrl = headImageUrl;
+    }
+
+    public ArrayList<CommentItem> getCommentItemArrayList() {
+        return commentItemArrayList;
+    }
+
+    public void setCommentItemArrayList(ArrayList<CommentItem> commentItemArrayList) {
+        this.commentItemArrayList = commentItemArrayList;
     }
 }

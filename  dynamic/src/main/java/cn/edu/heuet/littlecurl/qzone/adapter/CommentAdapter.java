@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,13 +31,15 @@ public class CommentAdapter extends BaseAdapter {
     //记录评论内容的集合
     private ArrayList<String> content;
 
+    private EditText editText;
     private Context context;
 
-    public CommentAdapter(ArrayList<String> name, ArrayList<String> toName, ArrayList<String> content, Context context) {
+    public CommentAdapter(ArrayList<String> name, ArrayList<String> toName, ArrayList<String> content, Context context, EditText editText) {
         this.name = name;
         this.toName = toName;
         this.content = content;
         this.context = context;
+        this.editText=editText;
     }
 
     @Override
@@ -107,7 +110,7 @@ public class CommentAdapter extends BaseAdapter {
 
             for (URLSpan url : urlspan) {
                 FeedTextViewURLSpan myURLSpan = new FeedTextViewURLSpan(url.getURL(),
-                        context,name.get(position),toName.get(position),content.get(position));
+                        context,name.get(position),toName.get(position),content.get(position),editText);
                 stylesBuilder.setSpan(myURLSpan, spannable.getSpanStart(url),
                         spannable.getSpanEnd(url), spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
@@ -130,13 +133,15 @@ public class CommentAdapter extends BaseAdapter {
         private String toName;
         // 评论内容
         private String content;
+        private EditText editText;
 
-        public FeedTextViewURLSpan(String clickString, Context context, String name, String toName, String content) {
+        public FeedTextViewURLSpan(String clickString, Context context, String name, String toName, String content,EditText editText) {
             this.clickString = clickString;
             this.context = context;
             this.name = name;
             this.toName = toName;
             this.content = content;
+            this.editText=editText;
         }
 
         @Override
@@ -155,12 +160,19 @@ public class CommentAdapter extends BaseAdapter {
             // 根据文字的标记 来进行相应的 响应事件
             if (clickString.equals("toName")) {
                 //可以再次进行跳转activity的操作
+                editText.setText("@"+toName+":");
+                editText.setSelection(editText.getText().length());//将光标移至文字末尾
                 Toast.makeText(context,"点击了"+toName,Toast.LENGTH_SHORT).show();
             } else if (clickString.equals("name")) {
                 //可以再次进行跳转activity的操作
+                editText.setText("@"+name+":");
+                editText.setSelection(editText.getText().length());//将光标移至文字末尾
+
                 Toast.makeText(context,"点击了"+name,Toast.LENGTH_SHORT).show();
             } else if(clickString.equals("content")){
                 //可以再次进去回复评论的操作
+                editText.setText("@"+name+":");
+                editText.setSelection(editText.getText().length());//将光标移至文字末尾
                 Toast.makeText(context,"点击了"+content,Toast.LENGTH_SHORT).show();
             }
 
