@@ -1,14 +1,23 @@
 package com.example.myapplication.Detaile;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -18,6 +27,7 @@ import org.jsoup.select.Elements;
 
 
 import com.example.myapplication.R;
+import com.example.myapplication.praise.GoodView;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
 import java.io.IOException;
@@ -30,19 +40,26 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends Activity {
 
     Handler handler;
     private XRecyclerView recyclerView;
     private ArrayList<DetailData> list=new ArrayList<>();
     String s3,URL,AniPotoURL=null,name=null;
     Context context;
+    GoodView mGoodView;
+    boolean praise=false;
+    MenuItem item1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
+        mGoodView = new GoodView(this);
+        ActionBar actionBar = getActionBar();
+        actionBar.show();
+        actionBar.setDisplayHomeAsUpEnabled(true);
         context=this;
         Intent intent=getIntent();
         URL=intent.getStringExtra("DetailURL")+"/";
@@ -57,41 +74,41 @@ public class DetailActivity extends AppCompatActivity {
 
         //recyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
         //recyclerView.setLoadingMoreProgressStyle(ProgressStyle.BallRotate);
-       // Details(URL);
-//        handler = new Handler() { //主线程更新UI
+        Details(URL);
+        handler = new Handler() { //主线程更新UI
+
+            public void handleMessage(Message msg) {
+
+                DetailAdapter adapter=new DetailAdapter(list,context);
+                recyclerView.setAdapter(adapter);
+
+                recyclerView.setLimitNumberToCallLoadMore(list.size());
+                super.handleMessage(msg);
+            }
+        };
+
+//        Retrofit retrofit=new Retrofit.Builder()
+//                .baseUrl(URL)
+//                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+//                .build();
 //
-//            public void handleMessage(Message msg) {
+//        Call<ResponseBody>  call=retrofit.create(GetDetail.class).getCall();
 //
-//                DetailAdapter adapter=new DetailAdapter(list,context);
-//                recyclerView.setAdapter(adapter);
-//
-//                recyclerView.setLimitNumberToCallLoadMore(list.size());
-//                super.handleMessage(msg);
+//        call.enqueue(new Callback<ResponseBody>() {
+//            @Override
+//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                try {
+//                    Log.e("TAG",response.body().string());
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
 //            }
-//        };
-
-        Retrofit retrofit=new Retrofit.Builder()
-                .baseUrl(URL)
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .build();
-
-        Call<ResponseBody>  call=retrofit.create(GetDetail.class).getCall();
-
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    Log.e("TAG",response.body().string());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-            }
-        });
+//
+//            @Override
+//            public void onFailure(Call<ResponseBody> call, Throwable t) {
+//
+//            }
+//        });
 
 
     }
@@ -195,5 +212,60 @@ public class DetailActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.detail_menu, menu);
 
+     // item1 = menu.findItem(R.id.m_collect);
+       /// searchView = (SearchView) MenuItemCompat.getActionView(item);
+
+        return super.onCreateOptionsMenu(menu);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.m_collect:
+                //Toast.makeText(this, "你点击了“用户”按键！", Toast.LENGTH_SHORT).show();
+                if (praise){
+                    item.setIcon(R.mipmap.collection);
+                    reset(MenuItemCompat.getActionView(item));
+
+                }else {
+                    item.setIcon(R.mipmap.collection_checked);
+                    good(MenuItemCompat.getActionView(item));
+                }
+                return true;
+            case R.id.m_share:
+                Intent share_intent = new Intent();
+                share_intent.setAction(Intent.ACTION_SEND);//设置分享行为
+                share_intent.setType("text/plain");//设置分享内容的类型
+                share_intent.putExtra(Intent.EXTRA_SUBJECT, "动物详情");//添加分享内容标题
+                share_intent.putExtra(Intent.EXTRA_TEXT,name+"动物详情：" +URL);//添加分享内容
+                //创建分享的Dialog
+                share_intent = Intent.createChooser(share_intent, "share");
+                context.startActivity(share_intent);
+               // Toast.makeText(this, "你点击了“发布”按键！", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    public void good(View view){
+
+        mGoodView.setText("+1");
+        mGoodView.show(view);
+        praise=true;
+    }
+    public void reset(View view){
+
+
+        mGoodView.reset();
+        praise=false;
+    }
 }

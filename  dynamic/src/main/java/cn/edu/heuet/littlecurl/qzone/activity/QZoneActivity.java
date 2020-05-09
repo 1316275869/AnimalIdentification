@@ -70,9 +70,9 @@ public class QZoneActivity extends AppCompatActivity
     // 自定义的测试数据（假装这是网络请求并解析后的数据）
     private void loadMyTestDate() {
         // 先构造MyMedia
-        String imgUrl1 = "https://i0.hdslb.com/bfs/album/0b6e13b1028b9a7426990034488b4af04b54c719.png";
-        String imgUrl2 = "https://i0.hdslb.com/bfs/album/7db905515628e6c18d8a61f4369a505f1ab0dec2.jpg";
-        String imgUrl3 = "https://i0.hdslb.com/bfs/album/f26eba49f3a8c8fc394f629aba27c7e1da812698.png";
+        String imgUrl1 = "http://image.iltaw.com/20150503/86/70/d6yOlg4b6ILbz1VF.jpg";
+        String imgUrl2 = "http://image.iltaw.com/20130313/120/112/n0skDWUAU6JXJgxp.jpg";
+        String imgUrl3 = "http://image.iltaw.com/20130416/99/89/jqBdm3zSbS0XsjcY.jpg";
         // 视频内容：敲架子鼓
         String videoUrl1 = "http://jzvd.nathen.cn/c6e3dc12a1154626b3476d9bf3bd7266/6b56c5f0dc31428083757a45764763b0-5287d2089db37e62345123a1be272f8b.mp4";
         // 视频内容：感受到鸭力
@@ -113,13 +113,16 @@ public class QZoneActivity extends AppCompatActivity
         Location location = new Location();
         location.setAddress("Test Address");
         // 最后构造EvaluationItem
-         RecyclerViewItem recyclerViewItem1 = new RecyclerViewItem(mediaList1, "河北经贸大学自强社是在校学生处指导、学生资助管理中心主办下，于2008年4月15日注册成立的，一个以在校学生为主体的学生公益社团。历经十年的发展，在学生处、学生资助管理中心的大力支持下，在每一届自强人的团结努力下，自强社已经由成... ", "2019-11-02",
+         RecyclerViewItem recyclerViewItem1 = new RecyclerViewItem(mediaList1, "东北虎，又称西伯利亚虎，分布于亚洲东北部，即俄罗斯西伯利亚地区、朝鲜和中国东北地区。东北虎是现存体重最大的肉食性猫科动物，其中雄性体长可达3米左右，尾长约1米，头大而圆，前额上的数条黑色横纹，中间常被串通，极似“王”字，故有“丛林之王”之美称,是中国国家一级保护动物。\n" +
+                 "世界自然保护联盟红色名录列为：极危(CR)", "2019-11-02",
                 "10080", "自强社", location, imgUrl1);
-         RecyclerViewItem recyclerViewItem2 = new RecyclerViewItem(mediaList2, "河北经贸大学信息技术学院成立于1996年，由原计算机系/经济信息系合并组建而成，是我校建设的第一批学院。", "2019-11-02",
+         RecyclerViewItem recyclerViewItem2 = new RecyclerViewItem(mediaList2, "远东豹，又名东北豹、朝鲜豹、阿穆尔豹，是豹的一个亚种，是北方寒带地区体型仅次于东北虎的大型猫科动物，也是世界上最稀少的猫科动物。曾经广泛分布于俄罗斯远东地区、中国东北黑龙江、吉林和朝鲜半岛北部的森林中。已被列入《华盛顿公约》附录Ⅰ，受到俄罗斯、朝鲜和中国政府的严格保护。", "2019-11-02",
                 "10080", "信息技术学院", location, imgUrl2);
-         RecyclerViewItem recyclerViewItem4 = new RecyclerViewItem(mediaList4, "河北经贸大学信息技术学院成立于1996年，由原计算机系/经济信息系合并组建而成，是我校建设的第一批学院。", "2019-11-02",
+         RecyclerViewItem recyclerViewItem4 = new RecyclerViewItem(mediaList4, "虎纹伯劳，俗名花伯劳、虎伯劳。主要分布于亚洲的东部及南部。一般栖息于树林、分布自平原至丘陵、山地，喜栖于疏林边缘以及巢址选在带荆棘的灌木及洋槐等阔叶树。主要食物是昆虫，特别是蝗虫、蟋蟀、甲虫、臭虫、蝴蝶和飞蛾，也吃小鸟和蜥蜴。该物种的模式产地在印度尼西亚爪哇。\n" +
+                 "世界自然保护联盟红色名录列为：无危（LC）", "2019-11-02",
                 "10080", "信息技术学院", location, imgUrl2);
-         RecyclerViewItem recyclerViewItem10 = new RecyclerViewItem(mediaList10, "河北经贸大学雷雨话剧社是河北经贸大学唯一以话剧为主，兼小品，相声等多种表演艺术形式，由一批热爱表演，热爱话剧，热爱中国传统艺术与当代流行艺术结合的同学共同组成的文艺类大型社团。雷雨话剧社坚持以追求话剧“更新颖”、“更大型”、“更专业”为奋斗目标，坚持在继承传统文化和前辈的演出经验... ", "2019-11-02",
+         RecyclerViewItem recyclerViewItem10 = new RecyclerViewItem(mediaList10, "沙虎鲨，又名戟齿砂鲛或戟齿锥齿鲨，是一种生活在海岸海域的大型鲨鱼。现正分布在大西洋、印度洋及太平洋不同的地方。沙虎鲨的外表凶猛，但它们往往很温顺，除非受到挑衅，否则它并不带有攻击性。食物主要有硬骨鱼（包括大海鲈）、其他鲨鱼及鱼、鱿鱼、蟹及龙虾。\n" +
+                 "世界自然保护联盟红色名录列为：濒危（EN）", "2019-11-02",
                 "10080", "雷雨话剧社", location, imgUrl3);
 
                 //添加数据 ,Demo只添加5条评论

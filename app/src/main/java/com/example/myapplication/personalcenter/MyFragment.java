@@ -77,10 +77,7 @@ public class MyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.my_fragment, container, false);
-//        Bundle bundle = getArguments();
-//        String agrs1 = bundle.getString("agrs1");
-//        TextView tv = (TextView)view.findViewById(R.id.container);
-//        tv.setText(agrs1);
+
         blurImageView= view.findViewById(R.id.iv_blur);
         avatarImageView = view.findViewById(R.id.iv_avatar);
         listView=view.findViewById(R.id.my_listview);

@@ -5,32 +5,65 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
+
+    android:background="@drawable/home"
     tools:context=".MainActivity">
 
-    <Button
+    <TextView
+        android:layout_margin="10dp"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25dp"
+        android:textColor="@color/colorBlue"
+        android:text= "  动物识别"/>
+    <Button
+        android:textSize="16dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/id_pz"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/shape"
         android:text="拍照"/>
     <Button
-        android:layout_width="wrap_content"
+        android:textSize="16dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/id_xc"
+        android:background="@drawable/shape"
         android:text="相册"/>
 
+    <TextView
+        android:id="@+id/result_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
+        android:textColor="@color/colorWhite"
+        />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="100dp"
+        android:id="@+id/id_image"
+        />
+
+    <TextView
+        android:id="@+id/result_tx"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
+        android:textColor="@color/colorWhite"
+        />
 
     <TextView
         android:id="@+id/id_tx"
+        android:paddingLeft="20dp"
+        android:textSize="18dp"
+        android:textColor="@color/colorYellow"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/id_image"
-        />
+
+        android:layout_height="wrap_content"/>
+
 
 
 </LinearLayout>

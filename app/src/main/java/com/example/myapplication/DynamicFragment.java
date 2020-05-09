@@ -7,17 +7,31 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
+import com.example.myapplication.personalcenter.Personal;
+import com.example.myapplication.personalcenter.PersonalAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import cn.edu.heuet.littlecurl.qzone.LauncherActivity;
 import cn.edu.heuet.littlecurl.qzone.activity.QZoneActivity;
 
 public class DynamicFragment extends Fragment {
 
-   private  Activity activity;
+    private List<Personal> personalList=new ArrayList<>();
+
+    private ListView listView;
+    private ImageView blurImageView,avatarImageView;
+    private  PersonalAdapter adapter;
+    private  Activity activity;
     public static DynamicFragment newInstance(String param1) {
         DynamicFragment fragment = new DynamicFragment();
         Bundle args = new Bundle();
@@ -47,17 +61,40 @@ public class DynamicFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dynamic_fragment, container, false);
 
-        TextView tv = (TextView)view.findViewById(R.id.dynamic_txt);
+        listView=view.findViewById(R.id.dynamic_listview);
 
 
-        tv.setOnClickListener(new View.OnClickListener() {
+        personalInit();
+
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                startActivity(new Intent(activity, QZoneActivity.class));
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Personal p=personalList.get(position);
+                if (p.getImg()==R.drawable.ic_forum_black_24dp){
+
+                    startActivity(new Intent(activity, QZoneActivity.class));
+
+                }
             }
         });
 
         return view;
+    }
+    public void personalInit(){
+
+        personalList.clear();
+
+        Personal personal=new Personal(R.drawable.ic_forum_black_24dp,"动物空间");
+        personalList.add(personal);
+        Personal personal1=new Personal(R.drawable.ic_forum_black_24dp,"动物新闻");
+        personalList.add(personal1);
+
+        adapter=new PersonalAdapter(activity,R.layout.personal_adapter,personalList);
+        listView.setAdapter(adapter);
+
+
     }
 
 }

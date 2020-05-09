@@ -6,12 +6,7 @@ import android.widget.ListView;
 
 /**
  * ================================================
- * 作    者：廖子尧
- * 版    本：1.0
- * 创建日期：2016/3/13
- * 描    述：
- * 修订历史：
- * ================================================
+ *=====================================
  */
 public class ExpandListView extends ListView {
     public ExpandListView(Context context) {

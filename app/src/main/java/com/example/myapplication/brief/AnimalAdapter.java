@@ -14,12 +14,16 @@ import androidx.annotation.Nullable;
 
 
 import com.example.myapplication.R;
+import com.example.myapplication.praise.GoodView;
 
 import java.util.List;
+
 
 public class AnimalAdapter extends ArrayAdapter<briefAnimalData> {
     private int resouceId;
     //将上下文、ListView子项布局的id、数据 传递进来
+    GoodView mGoodView;
+    boolean praise=false;
     public AnimalAdapter(@NonNull Context context, int resource, @NonNull List<briefAnimalData> objects) {
         super(context, resource, objects);
         resouceId=resource;
@@ -40,6 +44,8 @@ public class AnimalAdapter extends ArrayAdapter<briefAnimalData> {
             viewHolder.Image=view.findViewById(R.id.animal_img);
             viewHolder.name=view.findViewById(R.id.id_name);
             viewHolder.brief=view.findViewById(R.id.id_brief);
+            viewHolder.collect=view.findViewById(R.id.collect);
+
             //将ViewHolder存储在view中
             view.setTag(viewHolder);
         }else {
@@ -48,6 +54,8 @@ public class AnimalAdapter extends ArrayAdapter<briefAnimalData> {
             //重新获取ViewHolder（利用View的getTag()方法，把ViewHolder重新取出）
             viewHolder = (ViewHolder)view.getTag();
         }
+        mGoodView = new GoodView(getContext());
+
         //设置图片和文字
         viewHolder.Image.setImageBitmap(brief.getImg());
         viewHolder.name.setText(brief.getName());
@@ -57,14 +65,34 @@ public class AnimalAdapter extends ArrayAdapter<briefAnimalData> {
         viewHolder.name.setTextSize(20);
         viewHolder.name.setTextColor(0xffff00ff);
         viewHolder.brief.setText(brief.getBriefData());
+        viewHolder.collect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (praise){
+                    reset(viewHolder.collect);
+                }else {
+                    good(viewHolder.collect);
+                }
+            }
+        });
         return  view;
+    }
+    public void good(View view){
+        ((ImageView)view).setImageResource(R.mipmap.collection_checked);
+        mGoodView.setText("+1");
+        mGoodView.show(view);
+        praise=true;
+    }
+    public void reset(View view){
 
-
-
+        ((ImageView)view).setImageResource(R.mipmap.collection);
+        mGoodView.reset();
+        praise=false;
     }
     class ViewHolder{
         ImageView Image;
         TextView name;
         TextView brief;
+        ImageView collect;
     }
 }

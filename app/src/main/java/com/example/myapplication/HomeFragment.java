@@ -1,5 +1,7 @@
 package com.example.myapplication;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
@@ -26,6 +29,7 @@ import com.example.myapplication.personalcenter.getPhotoFromPhotoAlbum;
 import com.example.myapplication.utils.Base64Util;
 import com.example.myapplication.utils.HttpUtil;
 import com.example.myapplication.utils.PotoTool;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -46,6 +50,7 @@ public class HomeFragment extends Fragment {
     private final static int PICK_PHOTO=1;
     private Button B_pz,B_xc;
     private Button mStartSpeechButton;
+    private TextView result_phothotx,result_tx;
     private ImageView imageView;
     private static TextView tx;
     private static String photoPath;;
@@ -55,6 +60,7 @@ public class HomeFragment extends Fragment {
     private static String strResult;
     private Handler handler;
     private String analyResult;
+    Activity activity;
     public static HomeFragment newInstance(String param1) {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
@@ -63,9 +69,17 @@ public class HomeFragment extends Fragment {
         return fragment;
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        activity= (Activity) context;
+    }
+
     public HomeFragment() {
 
     }
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,6 +94,8 @@ public class HomeFragment extends Fragment {
         B_pz=view.findViewById(R.id.id_pz);
         tx=view.findViewById(R.id.id_tx);
         imageView=view.findViewById(R.id.id_image);
+        result_phothotx=view.findViewById(R.id.result_photo);
+        result_tx=view.findViewById(R.id.result_tx);
 
         handler = new Handler() { //主线程更新UI
             public void handleMessage(Message msg) {
@@ -135,11 +151,19 @@ public class HomeFragment extends Fragment {
             Bundle bundle=data.getExtras();
             bitmap=(Bitmap)bundle.get("data");
 
-            Glide.with(getActivity()).load(bitmap).override(100,100).into(imageView);
+            byte[] imgData = PotoTool.getBitmapByte(bitmap);
+
+            Glide.with(activity)
+                    .load(imgData)
+                    .override(600, 200)
+                    .fitCenter()
+                    .into(imageView);
 
 
             getIdentiResult(bitmap);
 
+            result_phothotx.setText("识别图片");
+            result_tx.setText("识别结果");
             //String s=analyzeJSONArray(getIdentiResult(bitmap));
             // Log.d("TExt",s);
             // tx.setText(s);
@@ -152,7 +176,14 @@ public class HomeFragment extends Fragment {
             photoPath = getPhotoFromPhotoAlbum.getRealPathFromUri(getContext(), data.getData());
             Log.d("Path",photoPath);
             bitmap=decodeBitmap(photoPath);
-            imageView.setImageBitmap(bitmap);
+
+
+
+            Glide.with(activity)
+                    .load(photoPath)
+                    .override(600, 200)
+                    .fitCenter()
+                    .into(imageView);
             getIdentiResult(bitmap);
             //  imageView.setImageBitmap(decodeBitmap(photoPath));
 
@@ -160,11 +191,14 @@ public class HomeFragment extends Fragment {
 
 
 
+            result_phothotx.setText("识别图片");
+            result_tx.setText("识别结果");
             //getIdentiResultPath(photoPath);
 
         }else {
             Toast.makeText(getActivity(), "图片损坏，请重新选择", Toast.LENGTH_SHORT).show();
         }
+
     }
 
     //调百度APi得到结果
@@ -204,7 +238,7 @@ public class HomeFragment extends Fragment {
                     String param = "image=" + imgParam;
 
                     // 注意这里仅为了简化编码每一次请求都去获取access_token，线上环境access_token有过期时间， 客户端可自行缓存，过期后重新获取。
-                    String accessToken = "24.86753eebfffcda6eccb00efa946305c4.2592000.1586172834.282335-18646339";
+                    String accessToken = "24.c03324700820a5fc9d4c7e248b7074e0.2592000.1591266324.282335-18646339";
 
                     result = HttpUtil.post(url, accessToken, param);//得到返回的jSON数据
 
