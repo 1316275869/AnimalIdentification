@@ -163,7 +163,7 @@ public class HomeFragment extends Fragment {
             getIdentiResult(bitmap);
 
             result_phothotx.setText("识别图片");
-            result_tx.setText("识别结果");
+            result_tx.setText("识别结果(动物名+相似度)");
             //String s=analyzeJSONArray(getIdentiResult(bitmap));
             // Log.d("TExt",s);
             // tx.setText(s);

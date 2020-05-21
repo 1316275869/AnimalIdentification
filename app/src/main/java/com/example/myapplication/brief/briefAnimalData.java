@@ -3,22 +3,22 @@ package com.example.myapplication.brief;
 import android.graphics.Bitmap;
 
 public class briefAnimalData {
-    private Bitmap img;
+    private String img;
     private String name;
     private String briefData;
     private String detailsUrl;
 
-    public briefAnimalData(Bitmap i,String n,String b,String url){
+    public briefAnimalData(String i,String n,String b,String url){
         this.img=i;
         this.name=n;
         this.briefData=b;
         this.detailsUrl=url;
     }
-    public Bitmap getImg() {
+    public String getImg() {
         return img;
     }
 
-    public void setImgid(Bitmap imgid) {
+    public void setImgid(String imgid) {
         this.img = imgid;
     }
 
@@ -44,5 +44,14 @@ public class briefAnimalData {
 
     public void setDetailsUrl(String detailsUrl) {
         this.detailsUrl = detailsUrl;
+    }
+    public  static briefAnimalData splitMsg(String msg){
+        String[] msgsplit=msg.split("&");
+        if (msgsplit[1]==null){
+            return null;
+        }else {
+            briefAnimalData collect=new briefAnimalData(msgsplit[0],msgsplit[1],msgsplit[2],msgsplit[3]);
+            return collect;
+        }
     }
 }

@@ -10,7 +10,8 @@ android {
 
 
     defaultConfig {
-        if (Integer.valueOf(runModule) == 1) {//当为运行module时才有applicationId属性（可以做到不同module的app能在手机上共存）
+        if (Integer.valueOf(runModule) == 1) {
+//当为运行module时才有applicationId属性（可以做到不同module的app能在手机上共存）
             applicationId "com.example.myapplication"
         }
 
@@ -21,17 +22,17 @@ android {
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-    if (Integer.valueOf(runModule)!=1) {
+    if (Integer.valueOf(runModule) != 1) {
 
-            sourceSets {
-                // main源集（source set）的闭包配置。
-                main {
-                    //每个源集只能有一个AndroidManifest.xml清单文件，
-                    //默认情况下，main源集的清单文件在src/main/ 目录中。
-                    manifest.srcFile 'src\\main\\AndroidManifest.xml'
-                }
-
+        sourceSets {
+            // main源集（source set）的闭包配置。
+            main {
+                //每个源集只能有一个AndroidManifest.xml清单文件，
+                //默认情况下，main源集的清单文件在src/main/ 目录中。
+                manifest.srcFile 'src\\main\\AndroidManifest.xml'
             }
+
+        }
 
     }
 

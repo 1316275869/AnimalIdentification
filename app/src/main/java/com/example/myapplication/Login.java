@@ -3,6 +3,7 @@ package com.example.myapplication;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,8 +31,9 @@ public class Login extends AppCompatActivity {
     private CheckBox mRememberCheck;
     Handler handler;
     boolean b=false;
-    private Personal personal=null;
-    Client client = new Client();
+    public static  Personal personal=null;
+    Client client ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,29 +45,52 @@ public class Login extends AppCompatActivity {
         mLoginButton = (Button) findViewById(R.id.login_btn_login);
         mCancleButton = (Button) findViewById(R.id.login_btn_cancle);
 
+
+
+
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    client=new Client();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }).start();
+
         handler = new Handler() { //主线程更新UI
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             public void handleMessage(Message msg) {
-                personal=client.personal;
-                System.out.println(personal.getP_useid()+"wwwwww");
-                Log.d("personal",personal.toString());
+
                 switch(msg.what){
 
-                    case  0:       //...
+                    case  0:
+                        //...
                         //收到PROGRESS_CHANGED时刷新UI
-                    if (personal.getP_useid().equals("null")){
-                        Toast.makeText(Login.this, "账号或密码错误", Toast.LENGTH_SHORT).show();
 
 
-                    }else{
-                        Toast.makeText(Login.this, "登陆成功", Toast.LENGTH_SHORT).show();
-
-                        finish();
-                    }
+                            if (personal.getP_useid().equals("null")){
+                                Toast.makeText(Login.this, "账号或密码错误", Toast.LENGTH_SHORT).show();
 
 
+                            }else{
+                                Toast.makeText(Login.this, "登陆成功", Toast.LENGTH_SHORT).show();
+                                Intent i = new Intent();
+                                i.putExtra("p_name",personal.getP_name());
+                                i.putExtra("P_useid",personal.getP_useid());
+                                i.putExtra("P_password",personal.getP_password());
+                                i.putExtra("P_password",personal.getP_headphoto());
+                                setResult(1,i);
 
-                }
+                                finish();
+                            }
+                        }
+
+
+
+
+
                 super.handleMessage(msg);
             }
         };
@@ -78,14 +103,35 @@ public class Login extends AppCompatActivity {
                         super.run();
 
 
+
                         try {
-                            client.initClient("192.168.0.106", 8989);
+                            client=new Client();
                             if (mAccount.getText()!=null&&mPwd.getText()!=null){
-                                client.listen(mAccount.getText().toString(),mPwd.getText().toString());
-                                client.listen(mAccount.getText().toString(),mPwd.getText().toString());
-                                //client.listen(mAccount.getText().toString(),mPwd.getText().toString());
-                                // personal=client.listen(mAccount.getText().toString(),mPwd.getText().toString());
-                                handler.sendEmptyMessage(0);
+
+
+
+                                String s=mAccount.getText().toString()+"&"+mPwd.getText().toString();
+
+                                client.sendInfo(s);
+
+
+                                personal=client.readInfo(handler,getApplication());
+//                                while (true) {
+//
+//
+//
+//
+//                                    try {
+//                                        Thread.currentThread().sleep(3000);
+//
+//                                    } catch (InterruptedException e) {
+//                                        // TODO: handle exception
+//                                        e.printStackTrace();
+//                                    }
+//
+//                                }
+
+
                             }
 
 

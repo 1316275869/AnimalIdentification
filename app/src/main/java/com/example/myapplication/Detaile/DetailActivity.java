@@ -28,6 +28,7 @@ import org.jsoup.select.Elements;
 
 import com.example.myapplication.R;
 import com.example.myapplication.praise.GoodView;
+import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
 import java.io.IOException;
@@ -50,6 +51,7 @@ public class DetailActivity extends Activity {
     GoodView mGoodView;
     boolean praise=false;
     MenuItem item1;
+    DetailAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,9 +71,26 @@ public class DetailActivity extends Activity {
         recyclerView=findViewById(R.id.rv);
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setPullRefreshEnabled(false);//上拉刷新
+        recyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                //DetailAdapter adapter=new DetailAdapter(list,context);
+                //recyclerView.setAdapter(adapter);
+                Details(URL);
+            }
+
+            @Override
+            public void onLoadMore() {
+
+            }
+        });
+
+        recyclerView.setPullRefreshEnabled(true);//上拉刷新
+        recyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
         recyclerView.setLoadingMoreEnabled(false);//下来加载
 
+        View emptyView=null;
+        recyclerView.setEmptyView(emptyView);
         //recyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
         //recyclerView.setLoadingMoreProgressStyle(ProgressStyle.BallRotate);
         Details(URL);
@@ -79,7 +98,7 @@ public class DetailActivity extends Activity {
 
             public void handleMessage(Message msg) {
 
-                DetailAdapter adapter=new DetailAdapter(list,context);
+                adapter=new DetailAdapter(list,context);
                 recyclerView.setAdapter(adapter);
 
                 recyclerView.setLimitNumberToCallLoadMore(list.size());

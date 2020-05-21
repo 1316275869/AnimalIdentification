@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,9 +23,11 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.example.myapplication.CollectActivity;
 import com.example.myapplication.Detaile.DetailActivity;
 import com.example.myapplication.Login;
 import com.example.myapplication.R;
+import com.example.myapplication.androidclient.Collect;
 import com.example.myapplication.brief.AnimalAdapter;
 import com.example.myapplication.brief.briefAnimalData;
 
@@ -42,14 +46,16 @@ import static android.app.Activity.RESULT_OK;
 public class MyFragment extends Fragment {
 
     private final static int PICK_PHOTO=1;
+    private final static int LOGIN=0;
 
     static String photoPath;
     private List<Personal> personalList=new ArrayList<>();
     private Context context;
     private ListView listView;
+    private TextView user_name,user_val;
     private ImageView blurImageView,avatarImageView;
     private  PersonalAdapter adapter;
-
+    private  com.example.myapplication.androidclient.Personal personal1=null;
     public static MyFragment newInstance(String param1) {
         MyFragment fragment = new MyFragment();
         Bundle args = new Bundle();
@@ -82,15 +88,24 @@ public class MyFragment extends Fragment {
         avatarImageView = view.findViewById(R.id.iv_avatar);
         listView=view.findViewById(R.id.my_listview);
 
-
-
-        if (photoPath==null){
+        user_name=view.findViewById(R.id.user_name);
+        user_val=view.findViewById(R.id.user_val);
+//
+//        Glide.with(context).load(context.getFilesDir().getPath()+"//"+"123456.jpg").bitmapTransform(new BlurTransformation(getActivity(), 25), new CenterCrop(getActivity())).into(blurImageView);
+//        Glide.with(context).load(context.getFilesDir().getPath()+"//"+"123456.jpg").bitmapTransform(new CropCircleTransformation(getActivity())).into(avatarImageView);
+        if (photoPath==null&&Login.personal==null){
             Glide.with(context).load(R.drawable.www).bitmapTransform(new BlurTransformation(getActivity(), 25), new CenterCrop(getActivity())).into(blurImageView);
            Glide.with(context).load(R.drawable.www).bitmapTransform(new CropCircleTransformation(getActivity())).into(avatarImageView);
 
-        }else {
+        }else if (photoPath!=null){
             Glide.with(context).load(photoPath).bitmapTransform(new BlurTransformation(getActivity(), 25), new CenterCrop(getActivity())).into(blurImageView);
             Glide.with(context).load(photoPath).bitmapTransform(new CropCircleTransformation(getActivity())).into(avatarImageView);
+
+        }else if (Login.personal.getP_headphoto()!=null){
+            user_name.setText(Login.personal.getP_name());
+            user_val.setText(Login.personal.getP_useid());
+            Glide.with(context).load(context.getFilesDir().getPath()+"//"+Login.personal.getP_headphoto()).bitmapTransform(new BlurTransformation(getActivity(), 25), new CenterCrop(getActivity())).into(blurImageView);
+            Glide.with(context).load(context.getFilesDir().getPath()+"//"+Login.personal.getP_headphoto()).bitmapTransform(new CropCircleTransformation(getActivity())).into(avatarImageView);
 
         }
 
@@ -110,9 +125,18 @@ public class MyFragment extends Fragment {
                 Personal p=personalList.get(position);
                 if (p.getImg()==R.drawable.ic_my){
 
-                    Intent intent=new Intent();
-                    intent.setClass(context, Login.class);//启动
-                    startActivity(intent);
+                    Intent intent=new Intent(getActivity(),Login.class);
+
+                    startActivityForResult(intent,LOGIN);
+                }
+                if(p.getImg()==R.drawable.ic_star_border_black_24dp){
+                    if (Login.personal.getP_useid()!=null){
+                        Intent intent=new Intent(getActivity(), CollectActivity.class);
+                        startActivity(intent);
+                    }else {
+                        Toast.makeText(getContext(), "未登录", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
             }
         });
@@ -148,6 +172,22 @@ public class MyFragment extends Fragment {
             Glide.with(context).load(photoPath).bitmapTransform(new CropCircleTransformation(getActivity())).into(avatarImageView);
 
         }
+        if(requestCode==0){
+            if(resultCode==1){
+
+                 if (Login.personal.getP_headphoto()!=null){
+                     System.out.println(context.getFilesDir().getPath()+"//"+Login.personal.getP_headphoto());
+                     Glide.with(context).load(context.getFilesDir().getPath()+"//"+Login.personal.getP_headphoto()).bitmapTransform(new BlurTransformation(getActivity(), 25), new CenterCrop(getActivity())).into(blurImageView);
+                     Glide.with(context).load(context.getFilesDir().getPath()+"//"+Login.personal.getP_headphoto()).bitmapTransform(new CropCircleTransformation(getActivity())).into(avatarImageView);
+                 }
+                 if (Login.personal.getP_useid()!=null){
+                     user_name.setText(Login.personal.getP_name());
+                     user_val.setText(Login.personal.getP_useid());
+
+                 }
+            }
+        }
+
     }
 
     private void goPhotoAlbum() {

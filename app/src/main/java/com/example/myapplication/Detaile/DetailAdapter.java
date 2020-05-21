@@ -75,6 +75,7 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
             HeadViewHolder viewHolder = (HeadViewHolder) holder;
             DetailData detailData = list.get(position);
+
             viewHolder.detail.setText(detailData.getDetail());
 
             Picasso.with(context).load(detailData.getUr()).into(viewHolder.iv_image);

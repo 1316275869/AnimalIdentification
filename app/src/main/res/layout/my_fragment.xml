@@ -44,7 +44,7 @@
                 android:layout_toLeftOf="@id/user_line"
                 android:textSize="17sp"
                 android:textColor="@color/colorWhite"
-                android:text="张三"/>
+                android:text="未登陆"/>
 
             <TextView
                 android:id="@+id/user_val"
@@ -54,7 +54,7 @@
                 android:textSize="17sp"
                 android:textColor="@color/colorWhite"
                 android:layout_toRightOf="@id/user_line"
-                android:text="13276475747"/>
+                />
         </RelativeLayout>
     </RelativeLayout>
     <ListView

@@ -1,15 +1,19 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
         import android.util.Log;
 
-        import androidx.appcompat.app.AppCompatActivity;
-        import androidx.fragment.app.FragmentManager;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
         import androidx.fragment.app.FragmentTransaction;
 
         import com.ashokvarma.bottomnavigation.BottomNavigationBar;
         import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.example.myapplication.androidclient.Client;
+import com.example.myapplication.androidclient.Personal;
 import com.example.myapplication.brief.ScanFragment;
 import com.example.myapplication.personalcenter.MyFragment;
 
@@ -23,6 +27,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
     private ScanFragment mScanFragment;
     private HomeFragment mHomeFragment;
     private DynamicFragment mDynamicFragment;
+    FragmentManager fm=this.getSupportFragmentManager();
+
 
 
     @Override
@@ -31,13 +37,16 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
         setContentView(R.layout.activity_main);
 
 
+
         /**
          * bottomNavigation 设置
          */
 
         bottomNavigationBar = (BottomNavigationBar) findViewById(R.id.bottom_navigation_bar);
 
+        Login.personal=new Personal();
         /** 导航基础设置 包括按钮选中效果 导航栏背景色等 */
+
         bottomNavigationBar
                 .setTabSelectedListener(this)
                 .setMode(BottomNavigationBar.MODE_FIXED)
@@ -78,8 +87,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
      * 设置默认导航栏
      */
     private void setDefaultFragment() {
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction transaction = fm.beginTransaction();
+        FragmentManager fm1 = getSupportFragmentManager();
+        FragmentTransaction transaction = fm1.beginTransaction();
         mHomeFragment = HomeFragment.newInstance("首页");
         transaction.replace(R.id.tb, mHomeFragment);
         transaction.commit();
@@ -91,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
     @Override
     public void onTabSelected(int position) {
         Log.d(TAG, "onTabSelected() called with: " + "position = [" + position + "]");
-        FragmentManager fm = this.getSupportFragmentManager();
+        //fm = this.getSupportFragmentManager();
         //开启事务
         FragmentTransaction transaction = fm.beginTransaction();
         switch (position) {
@@ -99,25 +108,25 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
                 if (mHomeFragment == null) {
                     mHomeFragment = HomeFragment.newInstance("首页");
                 }
-                transaction.replace(R.id.tb, mHomeFragment);
+                transaction.replace(R.id.tb, mHomeFragment,"mHomeFragment");
                 break;
             case 1:
                 if (mScanFragment == null) {
                     mScanFragment = ScanFragment.newInstance("搜索");
                 }
-                transaction.replace(R.id.tb, mScanFragment);
+                transaction.replace(R.id.tb, mScanFragment,"mScanFragment");
                 break;
             case 2:
                 if (mDynamicFragment == null) {
                     mDynamicFragment = DynamicFragment.newInstance("动态");
                 }
-                transaction.replace(R.id.tb, mDynamicFragment);
+                transaction.replace(R.id.tb, mDynamicFragment,"mDynamicFragment");
                 break;
             case 3:
                 if (mMyFragment == null) {
                     mMyFragment = MyFragment.newInstance("个人中心");
                 }
-                transaction.replace(R.id.tb, mMyFragment);
+                transaction.replace(R.id.tb, mMyFragment,"mMyFragment");
                 break;
 
             default:
@@ -149,4 +158,24 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+//        if (data!=null){
+//            /*在这里，我们通过碎片管理器中的Tag，就是每个碎片的名称，来获取对应的fragment*/
+//
+//            Bundle data1=data.getExtras();
+//            Personal personal1=new com.example.myapplication.androidclient.Personal(
+//                    data1.getString("p_name"),
+//                    data1.getString("p_useid"),
+//                    data1.getString("p_password"),
+//                    data1.getString("p_headphoto"));
+//            System.out.println("af"+personal1.getP_useid());
+//            Fragment f = fm.findFragmentByTag("mMyFragment");
+//            /*然后在碎片中调用重写的onActivityResult方法*/
+//            f.onActivityResult(requestCode, resultCode, data);
+//        }
+
+
+    }
 }

@@ -144,7 +144,7 @@ public class ScanFragment extends Fragment implements SearchView.OnQueryTextList
                         //...
                         //收到PROGRESS_CHANGED时刷新UI
 
-                       adapter=new AnimalAdapter(getActivity(),R.layout.brief_animal_data_item,briefList);
+                       adapter=new AnimalAdapter(getActivity(),R.layout.brief_animal_data_item,briefList,false);
                         listView.setAdapter(adapter);
                         break;
 
@@ -248,17 +248,17 @@ public class ScanFragment extends Fragment implements SearchView.OnQueryTextList
                         information=element1.select("div.image-wrap img").attr("alt");//动物名
 
                         AnimalPotoURL[i++]=e1;
-                        data=GetUserHead(e1);
-                        b= BitmapFactory.decodeByteArray(data,0,data.length);
-                        briefAnimalData aa=new briefAnimalData(b,information,e4,e3);
+                        //data=GetUserHead(e1);
+                       // b= BitmapFactory.decodeByteArray(data,0,data.length);
+                        briefAnimalData aa=new briefAnimalData(e1,information,e4,e3);
                          briefList.add(aa);
 
                         Log.e("EEE",information);
 
 
                     }
-                    briefAnimalData aa=new briefAnimalData(null,"","","");
-                    briefList.add(aa);
+//                    briefAnimalData aa=new briefAnimalData(null,"","","");
+//                    briefList.add(aa);
 
                     handler.sendEmptyMessage(PROGRESS_CHANGED);
 

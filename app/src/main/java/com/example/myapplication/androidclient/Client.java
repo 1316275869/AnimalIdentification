@@ -1,10 +1,21 @@
 package com.example.myapplication.androidclient;
 
+import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.res.Resources;
+import android.net.Uri;
+import android.os.Handler;
 import android.util.Log;
 
+import com.example.myapplication.R;
 import com.example.myapplication.androidclient.Personal;
+import com.example.myapplication.brief.briefAnimalData;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
@@ -12,151 +23,223 @@ import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class Client {
 
-//    private Selector selector;
-//    static SocketChannel channelwrite;
-//    static SocketChannel channelread;
-//    public void initClient(String ip, int port) throws IOException { // 获得一个Socket通道
-//        SocketChannel channel = SocketChannel.open(); // 设置通道为非阻塞
-//        channel.configureBlocking(false); // 获得一个通道管理器
-//        this.selector = Selector.open(); // 客户端连接服务器,其实方法执行并没有实现连接，需要在listen()方法中调
-//        // 用channel.finishConnect();才能完成连接
-//        channel.connect(new InetSocketAddress(ip, port));
-//        // 将通道管理器和该通道绑定，并为该通道注册SelectionKey.OP_CONNECT事件。
-//        channel.register(selector, SelectionKey.OP_CONNECT);
-//    }
-//
-//    public Personal listen(String use, String password) throws Exception { // 轮询访问selector
-//
-//        // 选择一组可以进行I/O操作的事件，放在selector中,客户端的该方法不会阻塞，
-//        // 这里和服务端的方法不一样，查看api注释可以知道，当至少一个通道被选中时，
-//        // selector的wakeup方法被调用，方法返回，而对于客户端来说，通道一直是被选中的
-//        selector.select(); // 获得selector中选中的项的迭代器
-//        Iterator ite = this.selector.selectedKeys().iterator();
-//        while (ite.hasNext()) {
-//
-//            SelectionKey key = (SelectionKey) ite.next(); // 删除已选的key,以防重复处理
-//            ite.remove(); // 连接事件发生
-//            if (key.isConnectable()) {
-//                System.out.println("Connectable ...");
-//                channelwrite = (SocketChannel) key.channel(); // 如果正在连接，则完成连接
-//                if (channelwrite.isConnectionPending()) {
-//                    channelwrite.finishConnect();
-//                } // 设置成非阻塞
-//                channelwrite.configureBlocking(false);
-//                // 在这里可以给服务端发送信息哦
-//
-//                String string=use+"&"+password;
-//                Log.i("xxx",string);
-//                channelwrite.write(ByteBuffer.wrap(new String(string).getBytes()));
-//                // 在和服务端连接成功之后，为了可以接收到服务端的信息，需要给通道设置读的权限。
-//                channelwrite.register(this.selector, SelectionKey.OP_READ); // 获得了可读的事件
-//                if(key.isReadable()){
-//                    Log.i("sddddd","6666");
-//
-//
-//                }
-//
-//            } else if (key.isReadable()) {
-//                channelread = (SocketChannel) key.channel();
-//                return read(key);
-//            }else {
-//                System.out.println("222222");
-//            }
-//        }
-//        return null;
-//
-//    }
-//
-//    private Personal read(SelectionKey key) throws Exception {
-//         channelread = (SocketChannel) key.channel();
-//        // 穿件读取的缓冲区
-//        ByteBuffer buffer = ByteBuffer.allocate(100);
-//        channelread.read(buffer);
-//        byte[] data = buffer.array();
-//        String[] msg = (new String(data).trim()).split("&");
-//        Log.d("YYY","client receive msg from server:" + msg);
-//        //key.cancel();
-//        //channel.close()
-//        Personal personal=Personal.splitMsg(new String(data).trim());
-//
-//
-//
-//        //ByteBuffer outBuffer = ByteBuffer.wrap(msg.getBytes());
-//        //channel.write(outBuffer);
-//        return personal;
-//    }
-private Selector selector;
-    static SocketChannel channel;
-    public Personal personal=null;
-    public void initClient(String ip, int port) throws IOException { // 获得一个Socket通道
-        SocketChannel channel = SocketChannel.open(); // 设置通道为非阻塞
-        channel.configureBlocking(false); // 获得一个通道管理器
-        this.selector = Selector.open(); // 客户端连接服务器,其实方法执行并没有实现连接，需要在listen()方法中调
-        // 用channel.finishConnect();才能完成连接
-        channel.connect(new InetSocketAddress(ip, port));
-        // 将通道管理器和该通道绑定，并为该通道注册SelectionKey.OP_CONNECT事件。
-        channel.register(selector, SelectionKey.OP_CONNECT);
+
+    Context context;
+    private final String HOST="192.168.43.114";
+    private final int POST=6667;
+    private Selector selector;
+    private static SocketChannel socketChannel;
+    private String username;
+
+    public Client() throws IOException{
+
+        selector =Selector.open();
+        //连接fuwq
+        this.socketChannel=socketChannel.open(new InetSocketAddress(HOST,POST));
+        socketChannel.configureBlocking(false);
+        socketChannel.register(selector, SelectionKey.OP_READ);
+        //得到username
+
+
     }
 
-    public void listen(String use,String pwd) throws Exception { // 轮询访问selector
+    //向服务器发送消息
+    public void sendInfo(String info) {
+        //info=username+"说"+info;
 
-        // 选择一组可以进行I/O操作的事件，放在selector中,客户端的该方法不会阻塞，
-        // 这里和服务端的方法不一样，查看api注释可以知道，当至少一个通道被选中时，
-        // selector的wakeup方法被调用，方法返回，而对于客户端来说，通道一直是被选中的
-        selector.select(); // 获得selector中选中的项的迭代器
-        Iterator ite = this.selector.selectedKeys().iterator();
-        while (ite.hasNext()) {
-
-            SelectionKey key = (SelectionKey) ite.next(); // 删除已选的key,以防重复处理
-            ite.remove(); // 连接事件发生
-            if (key.isConnectable()) {
-                System.out.println("Connectable ...");
-                channel = (SocketChannel) key.channel(); // 如果正在连接，则完成连接
-                if (channel.isConnectionPending()) {
-                    channel.finishConnect();
-                } // 设置成非阻塞
-                channel.configureBlocking(false);
-                // 在这里可以给服务端发送信息哦
-
-                String string=use+"&"+pwd;
-                channel.write(ByteBuffer.wrap(new String(string).getBytes()));
-                // 在和服务端连接成功之后，为了可以接收到服务端的信息，需要给通道设置读的权限。
-                channel.register(this.selector, SelectionKey.OP_READ); // 获得了可读的事件
-            } else if (key.isReadable()) {
-                read(key);
-            }else {
-                System.out.println("222222");
-            }
+        try {
+            //socketChannel.write(info);
+            socketChannel.write(ByteBuffer.wrap(info.getBytes("GB2312")));
+        } catch (IOException e) {
+            // TODO: handle exception
+            e.printStackTrace();
         }
 
     }
+    //读取从服务器端回复的消息
+    public Personal readInfo(Handler handler,Context context) {
 
-    private void read(SelectionKey key) throws Exception {
-        SocketChannel channel = (SocketChannel) key.channel();
-        // 穿件读取的缓冲区
-        ByteBuffer buffer = ByteBuffer.allocate(100);
-        channel.read(buffer);
-        byte[] data = buffer.array();
-        String msg = new String(data).trim();
-        System.out.println("client receive msg from server:" + msg);
-        Log.d("awddadada","aafafwfwfwfw");
+        try {
+            int readChannels=selector.select();
+
+            if (readChannels>0) {
+                Iterator<SelectionKey> iterator=selector.selectedKeys().iterator();
+
+                while (iterator.hasNext()) {//如果客户端有多个通道  考虑多个通道
+                    SelectionKey key = (SelectionKey) iterator.next();
+                    if (key.isReadable()) {
+                        //得到相关的通道
+
+                        SocketChannel sc=(SocketChannel) key.channel();
+                        //得到一个buffer
+                        ByteBuffer buffer=ByteBuffer.allocate(1024);
+                        //d读取
+                        sc.read(buffer);
+                        //把读到的数据转成字符串
+                        String msg=new String(buffer.array(),"GB2312");
+                        System.out.println(msg.trim());//去掉头尾空格
+
+                        Personal personal=Personal.splitMsg(msg);
 
 
-        personal=Personal.splitMsg(msg);
 
-        System.out.println("client receive msg from server:" + personal.getP_useid());
-        //key.cancel();
-        //channel.close();
+                        Thread.sleep(100);
 
-        //ByteBuffer outBuffer = ByteBuffer.wrap(msg.getBytes());
-        //channel.write(outBuffer);
+                        Log.d("Personal",msg);
+                        receiveFile(sc,personal.getP_headphoto(),context);
+                        handler.sendEmptyMessage(0);
+                        return personal;
+                    }
+
+                }
+                iterator.remove();//防止重复操作
+            }else {
+                //System.out.println("没有可以用 的通道。。。");
+                return null;
+
+            }
+
+
+
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+        return null;
     }
+    public void sendFile(Context co) throws Exception {
+        FileInputStream fis = null;
+        ByteBuffer sendBuffer = ByteBuffer.allocate(1024*20);
+        FileChannel channel = null;// 传输不同的数据选择对应的“通道”
+        fis = new FileInputStream(String.valueOf(getUriFromDrawableRes(co,R.drawable.logo)));
+        channel = fis.getChannel();
+        int i = 1;
+        int count = 0;
+        while ((count = channel.read(sendBuffer)) != -1) {
+            sendBuffer.flip();
+            int send = socketChannel.write(sendBuffer);
+            System.out.println("i===========" + (i++) + "   count:" + count + " send:" + send);
+            while (send == 0) {// 传输失败（ 服务器端可能因为缓存区满，而导致数据传输失败，需要重新发送）
+                Thread.sleep(10);
+                send = socketChannel.write(sendBuffer);
+                System.out.println("i重新传输====" + i + "   count:" + count + " send:" + send);
+            }
+            sendBuffer.clear();
+        }
+        channel.close();
+        fis.close();
+        socketChannel.close();
+    }
+    public List<briefAnimalData> readCollect(){
+        try {
+            int readChannels=selector.select();
+
+            if (readChannels>0) {
+                Iterator<SelectionKey> iterator=selector.selectedKeys().iterator();
+
+                while (iterator.hasNext()) {//如果客户端有多个通道  考虑多个通道
+                    SelectionKey key = (SelectionKey) iterator.next();
+                    if (key.isReadable()) {
+                        //得到相关的通道
+
+                        SocketChannel sc=(SocketChannel) key.channel();
+                        //得到一个buffer
+                        ByteBuffer buffer=ByteBuffer.allocate(1024*5);
+                        //d读取
+                        List<briefAnimalData> list=new ArrayList<>();
+
+                            int count=sc.read(buffer);
+                            //把读到的数据转成字符串
+
+                        String[] cmsg=new String[100];
+                            if (count>0){
+                                String msg=new String(buffer.array(),"GB2312").trim();
+                                cmsg=msg.split("&&");
+                                System.out.println(msg.trim());//去掉头尾空格
+
+
+                                for (int i=0;i<cmsg.length;i++){
+
+                                    briefAnimalData c=briefAnimalData.splitMsg(cmsg[i]);
+                                    System.out.println(cmsg[i]);
+                                    list.add(c);
+
+                                }
+
+                            }
+
+                        return list;
+
+                    }
+
+                }
+                iterator.remove();//防止重复操作
+            }else {
+                //System.out.println("没有可以用 的通道。。。");
+
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+        return null;
+    }
+    /**
+     * 得到资源文件中图片的Uri
+     * @param context 上下文对象
+     * @param id 资源id
+     * @return Uri
+     */
+    public Uri getUriFromDrawableRes(Context context, int id) {
+        Resources resources = context.getResources();
+        String path = ContentResolver.SCHEME_ANDROID_RESOURCE + "://"
+                + resources.getResourcePackageName(id) + "/"
+                + resources.getResourceTypeName(id) + "/"
+                + resources.getResourceEntryName(id);
+        return Uri.parse(path);
+    }
+    public static void receiveFile(SocketChannel socketChannel, String filename,Context context) throws IOException {
+        FileOutputStream fos = null;
+        FileChannel channel = null;
+
+
+
+        try {
+            fos = context.openFileOutput(filename, 0);
+            channel = fos.getChannel();
+            ByteBuffer buffer = ByteBuffer.allocateDirect(1024*100);
+
+            buffer.clear();
+            int count =socketChannel.read(buffer);
+            int k=0;
+            while (count>0) {
+                System.out.println("k=" + (k++) + " 读取到数据量:" + count);
+                buffer.flip();
+                channel.write(buffer);
+                fos.flush();
+                buffer.clear();
+                count = socketChannel.read(buffer);
+            }
+            if (count==-1) {
+                socketChannel.close();
+
+            }
+        } finally {
+            try {
+                channel.close();
+            } catch(Exception ex) {}
+            try {
+                fos.close();
+            } catch(Exception ex) {}
+        }
+    }
+
 }
