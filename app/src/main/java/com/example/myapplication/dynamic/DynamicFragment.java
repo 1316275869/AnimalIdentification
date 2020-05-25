@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.dynamic;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,18 +10,17 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.example.myapplication.R;
 import com.example.myapplication.personalcenter.Personal;
 import com.example.myapplication.personalcenter.PersonalAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.edu.heuet.littlecurl.qzone.LauncherActivity;
 import cn.edu.heuet.littlecurl.qzone.activity.QZoneActivity;
 
 public class DynamicFragment extends Fragment {

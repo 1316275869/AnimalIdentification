@@ -23,13 +23,9 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
-import com.example.myapplication.CollectActivity;
-import com.example.myapplication.Detaile.DetailActivity;
+import com.example.myapplication.collect.CollectActivity;
 import com.example.myapplication.Login;
 import com.example.myapplication.R;
-import com.example.myapplication.androidclient.Collect;
-import com.example.myapplication.brief.AnimalAdapter;
-import com.example.myapplication.brief.briefAnimalData;
 
 import java.util.ArrayList;
 import java.util.List;

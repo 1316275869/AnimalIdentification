@@ -9,13 +9,15 @@
     android:background="@drawable/home"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_margin="10dp"
-        android:layout_width="wrap_content"
+    <Button
+        android:textSize="16dp"
+        android:paddingTop="6dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="25dp"
-        android:textColor="@color/colorBlue"
-        android:text= "  动物识别"/>
+        android:id="@+id/id_time"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/shape"
+        android:text="实时识别"/>
     <Button
         android:textSize="16dp"
         android:layout_width="match_parent"
@@ -56,13 +58,63 @@
         />
 
     <TextView
+
         android:id="@+id/id_tx"
+        android:paddingLeft="20dp"
+        android:layout_marginTop="8dp"
+        android:textSize="18dp"
+        android:layout_marginBottom="8dp"
+        android:textColor="@color/colorYellow"
+        android:layout_width="match_parent"
+
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/id_tx1"
+        android:paddingLeft="20dp"
+        android:textSize="18dp"
+
+        android:textColor="@color/colorYellow"
+
+        android:layout_marginBottom="8dp"
+        android:layout_width="match_parent"
+
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/id_tx2"
+        android:paddingLeft="20dp"
+        android:textSize="18dp"
+        android:layout_marginBottom="8dp"
+        android:textColor="@color/colorYellow"
+        android:layout_width="match_parent"
+
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/id_tx3"
+        android:paddingLeft="20dp"
+        android:textSize="18dp"
+        android:layout_marginBottom="8dp"
+        android:textColor="@color/colorYellow"
+        android:layout_width="match_parent"
+
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/id_tx4"
+        android:paddingLeft="20dp"
+        android:textSize="18dp"
+        android:layout_marginBottom="8dp"
+        android:textColor="@color/colorYellow"
+        android:layout_width="match_parent"
+
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/id_tx5"
         android:paddingLeft="20dp"
         android:textSize="18dp"
         android:textColor="@color/colorYellow"
         android:layout_width="match_parent"
 
         android:layout_height="wrap_content"/>
+
 
 
 

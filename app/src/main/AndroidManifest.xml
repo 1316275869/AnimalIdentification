@@ -16,7 +16,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CollectActivity"></activity>
+        <activity android:name=".identification.BriefActivity"  android:theme="@style/AppThemeBar"></activity>
+        <activity
+            android:name=".identification.RealIdentification"
+            android:theme="@style/AppThemeBar" />
+        <activity android:name=".collect.CollectActivity" />
         <activity android:name=".Login" />
         <activity
             android:name=".Detaile.DetailActivity"

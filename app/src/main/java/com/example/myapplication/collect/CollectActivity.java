@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.collect;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,9 +14,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.myapplication.Detaile.DetailActivity;
+import com.example.myapplication.Login;
+import com.example.myapplication.R;
 import com.example.myapplication.androidclient.Client;
-import com.example.myapplication.androidclient.Collect;
-import com.example.myapplication.brief.AnimalAdapter;
 import com.example.myapplication.brief.briefAnimalData;
 
 import java.io.IOException;
@@ -63,7 +63,7 @@ public class CollectActivity extends AppCompatActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    client.sendInfo("collect"+"&"+Login.personal.getP_useid());
+                    client.sendInfo("collect"+"&"+ Login.personal.getP_useid());
                     list= client.readCollect();
                     handler.sendEmptyMessage(33);
                 }

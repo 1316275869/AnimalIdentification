@@ -189,11 +189,6 @@ public class ScanFragment extends Fragment implements SearchView.OnQueryTextList
        // sv.setIconified(false);
         sv.setFocusable(false);
 
-
-
-
-
-
         // 设置该SearchView显示搜索按钮
         sv.setSubmitButtonEnabled(true);
         // 设置该SearchView内默认显示的提示文本
@@ -272,21 +267,8 @@ public class ScanFragment extends Fragment implements SearchView.OnQueryTextList
             }
         }.start();
     }
-    /**
-     * @param urlpath String类型
-     * @return byte[]类型
-     * @throws IOException
-     */
-    public static byte[] GetUserHead(String urlpath) throws IOException {
-        URL url = new URL(urlpath);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET"); // 设置请求方法为GET
-        conn.setReadTimeout(5 * 1000); // 设置请求过时时间为5秒
-        InputStream inputStream = conn.getInputStream(); // 通过输入流获得图片数据
-        byte[] data = readInputStream(inputStream); // 获得图片的二进制数据
-        return data;
 
-    }
+
 
     private static byte[] readInputStream (InputStream inputStream) throws IOException{
         byte[] buffer = new byte[1024];

@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.collect;
 
 import android.content.Context;
 import android.graphics.Paint;
@@ -13,6 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.myapplication.Login;
+import com.example.myapplication.R;
 import com.example.myapplication.androidclient.Client;
 import com.example.myapplication.brief.briefAnimalData;
 import com.example.myapplication.praise.GoodView;

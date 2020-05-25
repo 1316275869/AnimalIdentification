@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.identification;
 
 import android.app.Activity;
 import android.content.Context;
@@ -25,11 +25,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.example.myapplication.R;
 import com.example.myapplication.personalcenter.getPhotoFromPhotoAlbum;
 import com.example.myapplication.utils.Base64Util;
 import com.example.myapplication.utils.HttpUtil;
 import com.example.myapplication.utils.PotoTool;
-import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -48,11 +48,11 @@ public class HomeFragment extends Fragment {
 
     private final static int PROGRESS_CHANGED = 1000;
     private final static int PICK_PHOTO=1;
-    private Button B_pz,B_xc;
+    private Button B_pz,B_xc,B_timeIden;
     private Button mStartSpeechButton;
     private TextView result_phothotx,result_tx;
     private ImageView imageView;
-    private static TextView tx;
+    private static TextView[] tx=new TextView[6];
     private static String photoPath;;
 
     private static  int TAKE_PHOTO=1;
@@ -92,21 +92,113 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.home_fragment, container, false);
         B_xc=view.findViewById(R.id.id_xc);
         B_pz=view.findViewById(R.id.id_pz);
-        tx=view.findViewById(R.id.id_tx);
+        B_timeIden=view.findViewById(R.id.id_time);
+        tx[0]=view.findViewById(R.id.id_tx);
         imageView=view.findViewById(R.id.id_image);
         result_phothotx=view.findViewById(R.id.result_photo);
         result_tx=view.findViewById(R.id.result_tx);
+        tx[1]=view.findViewById(R.id.id_tx1);
+        tx[2]=view.findViewById(R.id.id_tx2);
+        tx[3]=view.findViewById(R.id.id_tx3);
+        tx[4]=view.findViewById(R.id.id_tx4);
+        tx[5]=view.findViewById(R.id.id_tx5);
+
+        tx[0].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (tx[0].getText()!=null&&!tx[0].getText().toString().equals("")){
+
+                    String[] strname=tx[0].getText().toString().trim().split(" ");
+
+                    if(!strname[0].equals("非动物")){
+                        Intent intent=new Intent();
+                        intent.putExtra("name",strname[0]);
+                        intent.setClass(getActivity(),BriefActivity.class);
+                        startActivity(intent);
+                    }
+
+                }
+            }
+        });
+        tx[1].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (tx[1].getText()!=null&&!tx[1].getText().toString().equals("")){
+                    String[] strname=tx[1].getText().toString().trim().split(" ");
+                    Intent intent=new Intent(getActivity(),BriefActivity.class);
+                    intent.putExtra("name",strname[0]);
+                    startActivity(intent);
+                }
+            }
+        });
+        tx[2].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (tx[2].getText()!=null&&!tx[2].getText().toString().equals("")){
+                    String[] strname=tx[2].getText().toString().trim().split(" ");
+
+                    Intent intent=new Intent(getActivity(),BriefActivity.class);
+                    intent.putExtra("name",strname[0]);
+                    startActivity(intent);
+                }
+            }
+        });
+        tx[3].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (tx[3].getText()!=null&&!tx[3].getText().toString().equals("")){
+                    String[] strname=tx[3].getText().toString().trim().split(" ");
+
+                    Intent intent=new Intent(getActivity(),BriefActivity.class);
+                    intent.putExtra("name",strname[0]);
+                    startActivity(intent);
+                }
+            }
+        });
+        tx[4].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (tx[4].getText()!=null&&!tx[4].getText().toString().equals("")){
+                    String[] strname=tx[4].getText().toString().trim().split(" ");
+
+                    Intent intent=new Intent(getActivity(),BriefActivity.class);
+                    intent.putExtra("name",strname[0]);
+                    startActivity(intent);
+                }
+            }
+        });
+        tx[5].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (tx[5].getText()!=null&&!tx[5].getText().toString().equals("")){
+                    String[] strname=tx[5].getText().toString().trim().split(" ");
+
+                    Intent intent=new Intent(getActivity(),BriefActivity.class);
+                    intent.putExtra("name",strname[0]);
+                    startActivity(intent);
+                }
+            }
+        });
 
         handler = new Handler() { //主线程更新UI
             public void handleMessage(Message msg) {
                 switch(msg.what){
                     case PROGRESS_CHANGED:
-                        //...
-                        //收到PROGRESS_CHANGED时刷新UI
-                        //每1000ms
 
-                        tx.setText(analyResult);
 
+                        if (analyResult!=null){
+                            String[] strmsg=analyResult.trim().split("\n");
+                            for (int i=0;i<strmsg.length;i++){
+                                if(i<6){
+                                    tx[i].setText(strmsg[i]);
+
+
+                                }
+
+                            }
+                        }
 
                         break;
 
@@ -115,18 +207,31 @@ public class HomeFragment extends Fragment {
             }
         };
 
+        B_timeIden.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent=new Intent(getActivity(), RealIdentification.class);
+                startActivity(intent);
+            }
+        });
         B_pz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { //拍照
-                tx.setText("");
+
+                for(int i=0;i<6;i++){
+                    tx[i].setText("");
+                }
                 getPhoto();
             }
         });
         B_xc.setOnClickListener(new View.OnClickListener() {  //相册
             @Override
             public void onClick(View v) {
-                tx.setText("");
 
+                for(int i=0;i<6;i++){
+                    tx[i].setText("");
+                }
                 goPhotoAlbum();
             }
         });
